@@ -10,7 +10,7 @@ namespace IComparerComparisonBenchmarks
         static void Main(string[] args)
         {
 
-            var summary = BenchmarkRunner.Run<IComparerComparisonBenchmark>();
+            var summary = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
         }
     }
 }
