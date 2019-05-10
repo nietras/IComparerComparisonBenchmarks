@@ -8,16 +8,16 @@ Intel Core i7-8700 CPU 3.20GHz (Coffee Lake), 1 CPU, 12 logical and 6 physical c
 
 
 ```
-|                         Method |      Mean |     Error |     StdDev |    Median | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------------------------------- |----------:|----------:|-----------:|----------:|------:|--------:|-------:|------:|------:|----------:|
-|   Comparison_FromCompareToOpen | 295.81 ns | 2.2349 ns |  1.8662 ns | 295.80 ns |  0.52 |    0.01 |      - |     - |     - |         - |
-|                      IComparer | 570.22 ns | 6.6628 ns |  6.2324 ns | 568.19 ns |  1.00 |    0.00 |      - |     - |     - |         - |
-|                       Comparer | 405.85 ns | 7.8728 ns |  9.9566 ns | 410.20 ns |  0.71 |    0.02 |      - |     - |     - |         - |
-|            TComparer_TComparer |  95.74 ns | 0.5370 ns |  0.4761 ns |  95.75 ns |  0.17 |    0.00 |      - |     - |     - |         - |
-|            TComparer_IComparer | 541.17 ns | 1.6367 ns |  1.5310 ns | 540.99 ns |  0.95 |    0.01 |      - |     - |     - |         - |
-|             TComparer_Comparer | 550.60 ns | 3.2782 ns |  2.9060 ns | 550.83 ns |  0.97 |    0.01 |      - |     - |     - |         - |
-|           TComparer_Comparable | 573.29 ns | 4.1964 ns |  3.7200 ns | 572.08 ns |  1.01 |    0.01 |      - |     - |     - |         - |
-|       Comparison_FromIComparer | 436.85 ns | 8.6082 ns | 12.3457 ns | 444.42 ns |  0.76 |    0.02 |      - |     - |     - |         - |
-|        Comparison_FromComparer | 406.41 ns | 3.9844 ns |  3.7270 ns | 406.53 ns |  0.71 |    0.01 |      - |     - |     - |         - |
-| Comparison_CreateFromIComparer | 647.24 ns | 6.5523 ns |  5.4715 ns | 648.91 ns |  1.13 |    0.02 | 0.0095 |     - |     - |      64 B |
-|  Comparison_CreateFromComparer | 599.03 ns | 8.4911 ns |  7.9426 ns | 598.66 ns |  1.05 |    0.02 | 0.0095 |     - |     - |      64 B |
+|                         Method |      Mean |     Error |    StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+|------------------------------- |----------:|----------:|----------:|------:|--------:|-------:|------:|------:|----------:|
+|   Comparison_FromCompareToOpen | 299.94 ns |  6.520 ns |  5.780 ns |  0.53 |    0.01 |      - |     - |     - |         - |
+|                      IComparer | 565.13 ns |  2.313 ns |  1.932 ns |  1.00 |    0.00 |      - |     - |     - |         - |
+|                       Comparer | 412.30 ns |  8.117 ns | 10.554 ns |  0.72 |    0.02 |      - |     - |     - |         - |
+|            TComparer_TComparer |  97.98 ns |  1.983 ns |  2.204 ns |  0.17 |    0.00 |      - |     - |     - |         - |
+|            TComparer_IComparer | 540.01 ns |  8.191 ns |  7.662 ns |  0.96 |    0.01 |      - |     - |     - |         - |
+|             TComparer_Comparer | 550.02 ns |  3.565 ns |  3.335 ns |  0.97 |    0.01 |      - |     - |     - |         - |
+|           TComparer_Comparable | 578.65 ns |  8.345 ns |  7.806 ns |  1.02 |    0.01 |      - |     - |     - |         - |
+|       Comparison_FromIComparer | 411.88 ns |  8.177 ns | 11.193 ns |  0.73 |    0.02 |      - |     - |     - |         - |
+|        Comparison_FromComparer | 411.64 ns |  7.854 ns |  8.404 ns |  0.73 |    0.02 |      - |     - |     - |         - |
+| Comparison_CreateFromIComparer | 603.10 ns |  4.560 ns |  4.266 ns |  1.07 |    0.01 | 0.0095 |     - |     - |      64 B |
+|  Comparison_CreateFromComparer | 595.37 ns | 10.105 ns |  9.453 ns |  1.05 |    0.02 | 0.0095 |     - |     - |      64 B |

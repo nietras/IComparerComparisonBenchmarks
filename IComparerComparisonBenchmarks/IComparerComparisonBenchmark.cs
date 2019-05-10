@@ -117,6 +117,7 @@ namespace IComparerComparisonBenchmarks
     }
 
     [MemoryDiagnoser]
+    [DisassemblyDiagnoser]
     public abstract class ComparerComparisonBenchmark<T, TComparer>
         where TComparer : IComparer<T>
         where T : IComparable<T>

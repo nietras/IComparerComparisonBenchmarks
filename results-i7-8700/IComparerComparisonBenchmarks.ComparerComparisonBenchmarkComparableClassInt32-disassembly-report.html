@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>DisassemblyDiagnoser Output IComparerComparisonBenchmarks.ComparerComparisonBenchmarkComparableClassInt32-20190510-114359</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<table>
+<thead>
+<tr><th colspan="11">IComparerComparisonBenchmarks.ComparerComparisonBenchmarkComparableClassInt32-20190510-114359</th></tr>
+<tr>
+<th>Comparison_FromCompareToOpen .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>IComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>Comparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>TComparer_TComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>TComparer_IComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>TComparer_Comparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>TComparer_Comparable .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>Comparison_FromIComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>Comparison_FromComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>Comparison_CreateFromIComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+<th>Comparison_CreateFromComparer .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de464e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmarkComparableClassInt32.Comparison_FromCompareToOpen()
+00007ffb`de464e00 56              push    rsi
+00007ffb`de464e01 4883ec20        sub     rsp,20h
+00007ffb`de464e05 488bf1          mov     rsi,rcx
+00007ffb`de464e08 48b9f04c52defb7f0000 mov rcx,7FFBDE524CF0h
+00007ffb`de464e12 ba06000000      mov     edx,6
+00007ffb`de464e17 e894c7ac5f      call    coreclr!coreclr_shutdown_2+0xf230 (00007ffc`3df315b0)
+00007ffb`de464e1c 48ba5073aed7a2010000 mov rdx,1A2D7AE7350h
+00007ffb`de464e26 488b12          mov     rdx,qword ptr [rdx]
+00007ffb`de464e29 488bce          mov     rcx,rsi
+00007ffb`de464e2c 48b8787144defb7f0000 mov rax,7FFBDE447178h
+00007ffb`de464e36 4883c420        add     rsp,20h
+00007ffb`de464e3a 5e              pop     rsi
+00007ffb`de464e3b 48ffe0          jmp     rax
+00007ffb`de464e3e 0000            add     byte ptr [rax],al
+00007ffb`de464e40 190502000532    sbb     dword ptr [00007ffc`104b4e48],eax
+00007ffb`de464e46 016040          add     dword ptr [rax+40h],esp
+00007ffb`de464e49 0000            add     byte ptr [rax],al
+00007ffb`de464e4b 0000            add     byte ptr [rax],al
+00007ffb`de464e4d 0000            add     byte ptr [rax],al
+00007ffb`de464e4f 0000            add     byte ptr [rax],al
+00007ffb`de464e51 0000            add     byte ptr [rax],al
+00007ffb`de464e53 0000            add     byte ptr [rax],al
+00007ffb`de464e55 0000            add     byte ptr [rax],al
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de444e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].IComparer()
+00007ffb`de444e00 488b5108        mov     rdx,qword ptr [rcx+8]
+00007ffb`de444e04 48b8687142defb7f0000 mov rax,7FFBDE427168h
+00007ffb`de444e0e 48ffe0          jmp     rax
+00007ffb`de444e11 0000            add     byte ptr [rax],al
+00007ffb`de444e13 0019            add     byte ptr [rcx],bl
+00007ffb`de444e15 0000            add     byte ptr [rax],al
+00007ffb`de444e17 004000          add     byte ptr [rax],al
+00007ffb`de444e1a 0000            add     byte ptr [rax],al
+00007ffb`de444e1c 0000            add     byte ptr [rax],al
+00007ffb`de444e1e 0000            add     byte ptr [rax],al
+00007ffb`de444e20 0000            add     byte ptr [rax],al
+00007ffb`de444e22 0000            add     byte ptr [rax],al
+00007ffb`de444e24 0000            add     byte ptr [rax],al
+00007ffb`de444e26 0000            add     byte ptr [rax],al
+00007ffb`de444e28 e82759defb      call    00007ffb`da22a754
+00007ffb`de444e2d 7f00            jg      00007ffb`de444e2f
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de454e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].Comparer()
+00007ffb`de454e00 488b5110        mov     rdx,qword ptr [rcx+10h]
+00007ffb`de454e04 48b8707143defb7f0000 mov rax,7FFBDE437170h
+00007ffb`de454e0e 48ffe0          jmp     rax
+00007ffb`de454e11 0000            add     byte ptr [rax],al
+00007ffb`de454e13 0019            add     byte ptr [rcx],bl
+00007ffb`de454e15 0000            add     byte ptr [rax],al
+00007ffb`de454e17 004000          add     byte ptr [rax],al
+00007ffb`de454e1a 0000            add     byte ptr [rax],al
+00007ffb`de454e1c 0000            add     byte ptr [rax],al
+00007ffb`de454e1e 0000            add     byte ptr [rax],al
+00007ffb`de454e20 0000            add     byte ptr [rax],al
+00007ffb`de454e22 0000            add     byte ptr [rax],al
+00007ffb`de454e24 0000            add     byte ptr [rax],al
+00007ffb`de454e26 0000            add     byte ptr [rax],al
+00007ffb`de454e28 d027            shl     byte ptr [rdi],1
+00007ffb`de454e2a 5a              pop     rdx
+00007ffb`de454e2b defb            fdivp   st(3),st
+00007ffb`de454e2d 7f00            jg      00007ffb`de454e2f
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de464e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].TComparer_TComparer()
+00007ffb`de464e0d 480fbe4e38      movsx   rcx,byte ptr [rsi+38h]
+00007ffb`de464e12 884c2420        mov     byte ptr [rsp+20h],cl
+00007ffb`de464e16 488b0e          mov     rcx,qword ptr [rsi]
+00007ffb`de464e19 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de464e1d 488b12          mov     rdx,qword ptr [rdx]
+00007ffb`de464e20 488b5228        mov     rdx,qword ptr [rdx+28h]
+00007ffb`de464e24 4885d2          test    rdx,rdx
+00007ffb`de464e27 7512            jne     00007ffb`de464e3b
+00007ffb`de464e29 48ba18285bdefb7f0000 mov rdx,7FFBDE5B2818h
+00007ffb`de464e33 e8589da45f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de464e38 488bd0          mov     rdx,rax
+00007ffb`de464e3b 488bce          mov     rcx,rsi
+00007ffb`de464e3e 4c0fbe442420    movsx   r8,byte ptr [rsp+20h]
+00007ffb`de464e44 48b8f83e46defb7f0000 mov rax,7FFBDE463EF8h
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de454e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].TComparer_IComparer()
+00007ffb`de454e0e 488b7e08        mov     rdi,qword ptr [rsi+8]
+00007ffb`de454e12 488b0e          mov     rcx,qword ptr [rsi]
+00007ffb`de454e15 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de454e19 488b12          mov     rdx,qword ptr [rdx]
+00007ffb`de454e1c 488b5228        mov     rdx,qword ptr [rdx+28h]
+00007ffb`de454e20 4885d2          test    rdx,rdx
+00007ffb`de454e23 7512            jne     00007ffb`de454e37
+00007ffb`de454e25 48ba80285adefb7f0000 mov rdx,7FFBDE5A2880h
+00007ffb`de454e2f e85c9da55f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de454e34 488bd0          mov     rdx,rax
+00007ffb`de454e37 488bce          mov     rcx,rsi
+00007ffb`de454e3a 4c8bc7          mov     r8,rdi
+00007ffb`de454e3d 48b8f83e45defb7f0000 mov rax,7FFBDE453EF8h
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de444e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].TComparer_Comparer()
+00007ffb`de444e0e 488b7e10        mov     rdi,qword ptr [rsi+10h]
+00007ffb`de444e12 488b0e          mov     rcx,qword ptr [rsi]
+00007ffb`de444e15 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de444e19 488b12          mov     rdx,qword ptr [rdx]
+00007ffb`de444e1c 488b5228        mov     rdx,qword ptr [rdx+28h]
+00007ffb`de444e20 4885d2          test    rdx,rdx
+00007ffb`de444e23 7512            jne     00007ffb`de444e37
+00007ffb`de444e25 48ba802859defb7f0000 mov rdx,7FFBDE592880h
+00007ffb`de444e2f e85c9da65f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de444e34 488bd0          mov     rdx,rax
+00007ffb`de444e37 488bce          mov     rcx,rsi
+00007ffb`de444e3a 4c8bc7          mov     r8,rdi
+00007ffb`de444e3d 48b8f83e44defb7f0000 mov rax,7FFBDE443EF8h
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de474e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].TComparer_Comparable()
+00007ffb`de474e0d 480fbe4e40      movsx   rcx,byte ptr [rsi+40h]
+00007ffb`de474e12 884c2420        mov     byte ptr [rsp+20h],cl
+00007ffb`de474e16 488b0e          mov     rcx,qword ptr [rsi]
+00007ffb`de474e19 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de474e1d 488b12          mov     rdx,qword ptr [rdx]
+00007ffb`de474e20 488b5228        mov     rdx,qword ptr [rdx+28h]
+00007ffb`de474e24 4885d2          test    rdx,rdx
+00007ffb`de474e27 7512            jne     00007ffb`de474e3b
+00007ffb`de474e29 48ba18285cdefb7f0000 mov rdx,7FFBDE5C2818h
+00007ffb`de474e33 e8589da35f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de474e38 488bd0          mov     rdx,rax
+00007ffb`de474e3b 488bce          mov     rcx,rsi
+00007ffb`de474e3e 4c0fbe442420    movsx   r8,byte ptr [rsp+20h]
+00007ffb`de474e44 48b8f83e47defb7f0000 mov rax,7FFBDE473EF8h
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de464e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].Comparison_FromIComparer()
+00007ffb`de464e00 488b5118        mov     rdx,qword ptr [rcx+18h]
+00007ffb`de464e04 48b8787144defb7f0000 mov rax,7FFBDE447178h
+00007ffb`de464e0e 48ffe0          jmp     rax
+00007ffb`de464e11 0000            add     byte ptr [rax],al
+00007ffb`de464e13 0019            add     byte ptr [rcx],bl
+00007ffb`de464e15 0000            add     byte ptr [rax],al
+00007ffb`de464e17 004000          add     byte ptr [rax],al
+00007ffb`de464e1a 0000            add     byte ptr [rax],al
+00007ffb`de464e1c 0000            add     byte ptr [rax],al
+00007ffb`de464e1e 0000            add     byte ptr [rax],al
+00007ffb`de464e20 0000            add     byte ptr [rax],al
+00007ffb`de464e22 0000            add     byte ptr [rax],al
+00007ffb`de464e24 0000            add     byte ptr [rax],al
+00007ffb`de464e26 0000            add     byte ptr [rax],al
+00007ffb`de464e28 d027            shl     byte ptr [rdi],1
+00007ffb`de464e2a 5b              pop     rbx
+00007ffb`de464e2b defb            fdivp   st(3),st
+00007ffb`de464e2d 7f00            jg      00007ffb`de464e2f
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de464e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].Comparison_FromComparer()
+00007ffb`de464e00 488b5120        mov     rdx,qword ptr [rcx+20h]
+00007ffb`de464e04 48b8787144defb7f0000 mov rax,7FFBDE447178h
+00007ffb`de464e0e 48ffe0          jmp     rax
+00007ffb`de464e11 0000            add     byte ptr [rax],al
+00007ffb`de464e13 0019            add     byte ptr [rcx],bl
+00007ffb`de464e15 0000            add     byte ptr [rax],al
+00007ffb`de464e17 004000          add     byte ptr [rax],al
+00007ffb`de464e1a 0000            add     byte ptr [rax],al
+00007ffb`de464e1c 0000            add     byte ptr [rax],al
+00007ffb`de464e1e 0000            add     byte ptr [rax],al
+00007ffb`de464e20 0000            add     byte ptr [rax],al
+00007ffb`de464e22 0000            add     byte ptr [rax],al
+00007ffb`de464e24 0000            add     byte ptr [rax],al
+00007ffb`de464e26 0000            add     byte ptr [rax],al
+00007ffb`de464e28 d027            shl     byte ptr [rdi],1
+00007ffb`de464e2a 5b              pop     rbx
+00007ffb`de464e2b defb            fdivp   st(3),st
+00007ffb`de464e2d 7f00            jg      00007ffb`de464e2f
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de454e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].Comparison_CreateFromIComparer()
+00007ffb`de454e12 488b7e08        mov     rdi,qword ptr [rsi+8]
+00007ffb`de454e16 488b1e          mov     rbx,qword ptr [rsi]
+00007ffb`de454e19 488bcb          mov     rcx,rbx
+00007ffb`de454e1c 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de454e20 488b2a          mov     rbp,qword ptr [rdx]
+00007ffb`de454e23 488b5518        mov     rdx,qword ptr [rbp+18h]
+00007ffb`de454e27 4885d2          test    rdx,rdx
+00007ffb`de454e2a 7512            jne     00007ffb`de454e3e
+00007ffb`de454e2c 48ba401c52defb7f0000 mov rdx,7FFBDE521C40h
+00007ffb`de454e36 e8559da55f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de454e3b 488bd0          mov     rdx,rax
+00007ffb`de454e3e 488bcf          mov     rcx,rdi
+00007ffb`de454e41 49b8808e2039fc7f0000 mov r8,offset System_Private_CoreLib+0x178e80 (00007ffc`39208e80)
+00007ffb`de454e4b e800a9aa5f      call    coreclr!GC_Initialize+0x679e0 (00007ffc`3deff750)
+00007ffb`de454e50 4c8bf0          mov     r14,rax
+00007ffb`de454e53 488bcb          mov     rcx,rbx
+00007ffb`de454e56 488b4520        mov     rax,qword ptr [rbp+20h]
+00007ffb`de454e5a 4885c0          test    rax,rax
+00007ffb`de454e5d 750f            jne     00007ffb`de454e6e
+00007ffb`de454e5f 48ba701d52defb7f0000 mov rdx,7FFBDE521D70h
+00007ffb`de454e69 e8229da55f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de454e6e 488bc8          mov     rcx,rax
+00007ffb`de454e71 e83ac3ad5f      call    coreclr!coreclr_shutdown_2+0xee30 (00007ffc`3df311b0)
+00007ffb`de454e76 488bd8          mov     rbx,rax
+00007ffb`de454e79 488bcb          mov     rcx,rbx
+00007ffb`de454e7c 488bd7          mov     rdx,rdi
+00007ffb`de454e7f 4d8bc6          mov     r8,r14
+00007ffb`de454e82 e8092ef35a      call    System_Private_CoreLib+0x2f7c90 (00007ffc`39387c90)
+00007ffb`de454e87 488bce          mov     rcx,rsi
+00007ffb`de454e8a 488bd3          mov     rdx,rbx
+00007ffb`de454e8d 48b8787143defb7f0000 mov rax,7FFBDE437178h
+
+No ILOffsetMap found
+System.Comparison`1[[System.__Canon, System.Private.CoreLib]]..ctor(System.Object, IntPtr)
+
+</code></pre></td>
+<td style="vertical-align:top;"><pre><code>
+00007ffb`de454e00 IComparerComparisonBenchmarks.ComparerComparisonBenchmark`2[[System.__Canon, System.Private.CoreLib],[IComparerComparisonBenchmarks.ComparableClassInt32TComparer, IComparerComparisonBenchmarks]].Comparison_CreateFromComparer()
+00007ffb`de454e12 488b7e10        mov     rdi,qword ptr [rsi+10h]
+00007ffb`de454e16 488b1e          mov     rbx,qword ptr [rsi]
+00007ffb`de454e19 488bcb          mov     rcx,rbx
+00007ffb`de454e1c 488b5130        mov     rdx,qword ptr [rcx+30h]
+00007ffb`de454e20 488b2a          mov     rbp,qword ptr [rdx]
+00007ffb`de454e23 488b5510        mov     rdx,qword ptr [rbp+10h]
+00007ffb`de454e27 4885d2          test    rdx,rdx
+00007ffb`de454e2a 7512            jne     00007ffb`de454e3e
+00007ffb`de454e2c 48ba301c52defb7f0000 mov rdx,7FFBDE521C30h
+00007ffb`de454e36 e8559da55f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de454e3b 488bd0          mov     rdx,rax
+00007ffb`de454e3e 488bcf          mov     rcx,rdi
+00007ffb`de454e41 49b8806b2439fc7f0000 mov r8,offset System_Private_CoreLib+0x1b6b80 (00007ffc`39246b80)
+00007ffb`de454e4b e800a9aa5f      call    coreclr!GC_Initialize+0x679e0 (00007ffc`3deff750)
+00007ffb`de454e50 4c8bf0          mov     r14,rax
+00007ffb`de454e53 488bcb          mov     rcx,rbx
+00007ffb`de454e56 488b4520        mov     rax,qword ptr [rbp+20h]
+00007ffb`de454e5a 4885c0          test    rax,rax
+00007ffb`de454e5d 750f            jne     00007ffb`de454e6e
+00007ffb`de454e5f 48ba701d52defb7f0000 mov rdx,7FFBDE521D70h
+00007ffb`de454e69 e8229da55f      call    coreclr!GC_Initialize+0x16e20 (00007ffc`3deaeb90)
+00007ffb`de454e6e 488bc8          mov     rcx,rax
+00007ffb`de454e71 e83ac3ad5f      call    coreclr!coreclr_shutdown_2+0xee30 (00007ffc`3df311b0)
+00007ffb`de454e76 488bd8          mov     rbx,rax
+00007ffb`de454e79 488bcb          mov     rcx,rbx
+00007ffb`de454e7c 488bd7          mov     rdx,rdi
+00007ffb`de454e7f 4d8bc6          mov     r8,r14
+00007ffb`de454e82 e8092ef35a      call    System_Private_CoreLib+0x2f7c90 (00007ffc`39387c90)
+00007ffb`de454e87 488bce          mov     rcx,rsi
+00007ffb`de454e8a 488bd3          mov     rdx,rbx
+00007ffb`de454e8d 48b8787143defb7f0000 mov rax,7FFBDE437178h
+
+No ILOffsetMap found
+System.Comparison`1[[System.__Canon, System.Private.CoreLib]]..ctor(System.Object, IntPtr)
+
+</code></pre></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
