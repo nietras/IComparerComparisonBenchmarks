@@ -46,9 +46,80 @@ namespace IComparerComparisonBenchmarks
         }
     }
 
+    public class ComparableClassInt32 : IComparable<ComparableClassInt32>
+    {
+        public readonly int Value;
+
+        public ComparableClassInt32(int value)
+        {
+            Value = value;
+        }
+
+        public int CompareTo(ComparableClassInt32 other)
+        {
+            return this.Value.CompareTo(other.Value);
+        }
+    }
+
+    public readonly struct ComparableClassInt32TComparer : IComparer<ComparableClassInt32>
+    {
+        public int Compare(ComparableClassInt32 x, ComparableClassInt32 y) => x.CompareTo(y);
+    }
+
+    public class ComparerComparisonBenchmarkComparableClassInt32 : ComparerComparisonBenchmark<ComparableClassInt32, ComparableClassInt32TComparer>
+    {
+        // TODO: We have to get it from the Comparer too
+        static readonly Comparison<ComparableClassInt32> m_openComparisonFromCompareToOpen = (Comparison<ComparableClassInt32>)
+            Delegate.CreateDelegate(
+                typeof(Comparison<ComparableClassInt32>),
+                typeof(ComparableClassInt32).GetMethod("CompareTo", new Type[] { typeof(ComparableClassInt32) }));
+
+        public ComparerComparisonBenchmarkComparableClassInt32()
+            : base(new ComparableClassInt32TComparer())
+        {
+            m_pivot = new ComparableClassInt32(m_random.Next(-20, 20));
+            m_array = Enumerable.Range(0, 100).Select(_ => new ComparableClassInt32(m_random.Next(-100, 100))).ToArray();
+        }
+
+        [Benchmark()]
+        public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
+    }
+
+    public readonly struct StringTComparer : IComparer<string>
+    {
+        public int Compare(string x, string y) => x.CompareTo(y);
+    }
+
+    public readonly struct ComparableTComparer<T> 
+        : IComparer<T>
+        where T : IComparable<T>
+    {
+        public int Compare(T x, T y) => x.CompareTo(y);
+    }
+
+    public class ComparerComparisonBenchmarkString : ComparerComparisonBenchmark<string, StringTComparer>
+    {
+        // TODO: We have to get it from the Comparer too
+        static readonly Comparison<string> m_openComparisonFromCompareToOpen = (Comparison<string>)
+            Delegate.CreateDelegate(
+                typeof(Comparison<string>), 
+                typeof(string).GetMethod("CompareTo", new Type[] { typeof(string) }));
+
+        public ComparerComparisonBenchmarkString()
+            : base(new StringTComparer())
+        {
+            m_pivot = m_random.Next(200, 300).ToString("D3");
+            m_array = Enumerable.Range(0, 100).Select(_ => m_random.Next(100, 400).ToString("D3")).ToArray();
+        }
+
+        [Benchmark()]
+        public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
+    }
+
     [MemoryDiagnoser]
     public abstract class ComparerComparisonBenchmark<T, TComparer>
         where TComparer : IComparer<T>
+        where T : IComparable<T>
     {
         protected static readonly Random m_random = new Random(42);
 
@@ -57,10 +128,8 @@ namespace IComparerComparisonBenchmarks
         readonly Comparison<T> m_comparisonFromIComparer;
         readonly Comparison<T> m_comparisonFromComparer;
         readonly TComparer m_tcomparer;
+        readonly ComparableTComparer<T> m_comparableTComparer = new ComparableTComparer<T>();
 
-        //var stringCompareToMethodInfo = typeof(string).GetMethod("CompareTo", new Type[] { typeof(string) });
-        //var open = (Func<string, string, T>)
-        //    Delegate.CreateDelegate(typeof(Func<string, string, T>), stringCompareToMethodInfo);
 
         protected T m_pivot;
         protected T[] m_array;
@@ -88,6 +157,9 @@ namespace IComparerComparisonBenchmarks
         public int TComparer_Comparer() => RunTComparer(m_comparer);
 
         [Benchmark()]
+        public int TComparer_Comparable() => RunTComparer(m_comparableTComparer);
+
+        [Benchmark()]
         public int Comparison_FromIComparer() => RunComparison(m_comparisonFromIComparer);
 
         [Benchmark()]
@@ -99,7 +171,7 @@ namespace IComparerComparisonBenchmarks
         [Benchmark()]
         public int Comparison_CreateFromComparer() => RunComparison(m_comparer.Compare);
 
-        int RunIComparer(IComparer<T> comparer)
+        protected int RunIComparer(IComparer<T> comparer)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
@@ -109,7 +181,7 @@ namespace IComparerComparisonBenchmarks
             return sum;
         }
 
-        int RunComparer(Comparer<T> comparer)
+        protected int RunComparer(Comparer<T> comparer)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
@@ -119,7 +191,7 @@ namespace IComparerComparisonBenchmarks
             return sum;
         }
 
-        int RunComparison(Comparison<T> comparison)
+        protected int RunComparison(Comparison<T> comparison)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
@@ -129,8 +201,8 @@ namespace IComparerComparisonBenchmarks
             return sum;
         }
 
-        int RunTComparer<TComparer>(TComparer comparer)
-            where TComparer : IComparer<T>
+        protected int RunTComparer<TComp>(TComp comparer)
+            where TComp : IComparer<T>
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
