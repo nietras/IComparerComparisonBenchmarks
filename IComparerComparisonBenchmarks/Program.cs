@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using BenchmarkDotNet.Running;
 
 namespace IComparerComparisonBenchmarks
@@ -7,6 +9,7 @@ namespace IComparerComparisonBenchmarks
     {
         static void Main(string[] args)
         {
+
             var summary = BenchmarkRunner.Run<IComparerComparisonBenchmark>();
         }
     }

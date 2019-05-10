@@ -6,6 +6,8 @@ using BenchmarkDotNet.Attributes;
 
 namespace IComparerComparisonBenchmarks
 {
+    delegate int OpenComparison<T>(ref T x, T y) where T : struct;
+
     [MemoryDiagnoser]
     public class IComparerComparisonBenchmark
     {
@@ -16,6 +18,19 @@ namespace IComparerComparisonBenchmarks
         readonly Comparer<int> m_comparer = Comparer<int>.Default;
         readonly Comparison<int> m_comparisonFromIComparer;
         readonly Comparison<int> m_comparisonFromComparer;
+
+        //var stringCompareToMethodInfo = typeof(string).GetMethod("CompareTo", new Type[] { typeof(string) });
+        //var open = (Func<string, string, int>)
+        //    Delegate.CreateDelegate(typeof(Func<string, string, int>), stringCompareToMethodInfo);
+
+        // For value types we do not actually needed the open one
+        // and these do not match the Comparison<T> signature due to `ref`
+        // https://stackoverflow.com/questions/4326736/how-can-i-create-an-open-delegate-from-a-structs-instance-method?rq=1
+        OpenComparison<int> m_openComparisonFromCompareToOpen = (OpenComparison<int>)
+            Delegate.CreateDelegate(
+                typeof(OpenComparison<int>),
+                typeof(int).GetMethod("CompareTo", new Type[] { typeof(int) })
+            );
 
         public IComparerComparisonBenchmark()
         {
@@ -43,6 +58,9 @@ namespace IComparerComparisonBenchmarks
 
         [Benchmark()]
         public int Comparison_FromComparer() => RunComparison(m_comparisonFromComparer);
+
+        [Benchmark()]
+        public int OpenComparison_FromCompareTo() => RunOpenComparison(m_openComparisonFromCompareToOpen);
 
         [Benchmark()]
         public int Comparison_CreateFromIComparer() => RunComparison(m_icomparer.Compare);
@@ -76,6 +94,17 @@ namespace IComparerComparisonBenchmarks
             for (int i = 0; i < m_array.Length; i++)
             {
                 sum += comparison(0, m_array[i]);
+            }
+            return sum;
+        }
+
+        int RunOpenComparison(OpenComparison<int> openComparison)
+        {
+            int value = 0;
+            int sum = 0;
+            for (int i = 0; i < m_array.Length; i++)
+            {
+                sum += openComparison(ref value, m_array[i]);
             }
             return sum;
         }
