@@ -6,7 +6,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace IComparerComparisonBenchmarks
 {
-    //[CoreJob]
+    [MemoryDiagnoser]
     public class IComparerComparisonBenchmark
     {
         static readonly Random m_random = new Random(42);
@@ -24,47 +24,76 @@ namespace IComparerComparisonBenchmarks
         }
 
         [Benchmark(Baseline = true)]
-        public int IComparer()
+        public int IComparer() => RunIComparer(m_icomparer);
+
+        [Benchmark()]
+        public int Comparer() => RunComparer(m_comparer);
+
+        [Benchmark()]
+        public int TComparer_IntComparer() => RunTComparer(new IntComparer());
+
+        [Benchmark()]
+        public int TComparer_IComparer() => RunTComparer(m_icomparer);
+
+        [Benchmark()]
+        public int TComparer_Comparer() => RunTComparer(m_comparer);
+
+        [Benchmark()]
+        public int Comparison_FromIComparer() => RunComparison(m_comparisonFromIComparer);
+
+        [Benchmark()]
+        public int Comparison_FromComparer() => RunComparison(m_comparisonFromComparer);
+
+        [Benchmark()]
+        public int Comparison_CreateFromIComparer() => RunComparison(m_icomparer.Compare);
+
+        [Benchmark()]
+        public int Comparison_CreateFromComparer() => RunComparison(m_comparer.Compare);
+
+        int RunIComparer(IComparer<int> comparer)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
             {
-                sum += m_icomparer.Compare(0, m_array[i]);
+                sum += comparer.Compare(0, m_array[i]);
             }
             return sum;
         }
 
-        [Benchmark()]
-        public int Comparer()
+        int RunComparer(Comparer<int> comparer)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
             {
-                sum += m_comparer.Compare(0, m_array[i]);
+                sum += comparer.Compare(0, m_array[i]);
             }
             return sum;
         }
 
-        [Benchmark()]
-        public int Comparison_FromIComparer()
+        int RunComparison(Comparison<int> comparison)
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
             {
-                sum += m_comparisonFromIComparer(0, m_array[i]);
+                sum += comparison(0, m_array[i]);
             }
             return sum;
         }
 
-        [Benchmark()]
-        public int Comparison_FromComparer()
+        int RunTComparer<TComparer>(TComparer comparer)
+            where TComparer : IComparer<int>
         {
             int sum = 0;
             for (int i = 0; i < m_array.Length; i++)
             {
-                sum += m_comparisonFromComparer(0, m_array[i]);
+                sum += comparer.Compare(0, m_array[i]);
             }
             return sum;
+        }
+
+        readonly struct IntComparer : IComparer<int>
+        {
+            public int Compare(int x, int y) => x.CompareTo(y);
         }
     }
 }
