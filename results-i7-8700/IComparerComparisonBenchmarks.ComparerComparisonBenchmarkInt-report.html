@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>IComparerComparisonBenchmarks.ComparerComparisonBenchmarkInt-20190510-021239</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 10.0.17763.437 (1809/October2018Update/Redstone5)
+Intel Core i7-8700 CPU 3.20GHz (Coffee Lake), 1 CPU, 12 logical and 6 physical cores
+.NET Core SDK=3.0.100-preview-009812
+  [Host]     : .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT
+  DefaultJob : .NET Core 2.1.9 (CoreCLR 4.6.27414.06, CoreFX 4.6.27415.01), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>                  Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Ratio</th><th>RatioSD</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>OpenComparison_FromCompareTo</td><td>214.8 ns</td><td>0.8574 ns</td><td>0.7601 ns</td><td>0.90</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>IComparer</td><td>238.4 ns</td><td>1.8921 ns</td><td>1.6773 ns</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Comparer</td><td>201.1 ns</td><td>3.1639 ns</td><td>2.8047 ns</td><td>0.84</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>TComparer_TComparer</td><td>105.8 ns</td><td>0.8068 ns</td><td>0.7547 ns</td><td>0.44</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>TComparer_IComparer</td><td>240.1 ns</td><td>2.7365 ns</td><td>2.5597 ns</td><td>1.01</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>TComparer_Comparer</td><td>244.7 ns</td><td>3.2373 ns</td><td>3.0281 ns</td><td>1.03</td><td>0.02</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>TComparer_Comparable</td><td>106.5 ns</td><td>2.2041 ns</td><td>1.9539 ns</td><td>0.45</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Comparison_FromIComparer</td><td>199.3 ns</td><td>0.4095 ns</td><td>0.3197 ns</td><td>0.84</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Comparison_FromComparer</td><td>200.4 ns</td><td>1.8194 ns</td><td>1.7019 ns</td><td>0.84</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Comparison_CreateFromIComparer</td><td>275.8 ns</td><td>0.7717 ns</td><td>0.6841 ns</td><td>1.16</td><td>0.01</td><td>0.0100</td><td>-</td><td>-</td><td>64 B</td>
+</tr><tr><td>Comparison_CreateFromComparer</td><td>213.9 ns</td><td>0.6353 ns</td><td>0.5632 ns</td><td>0.90</td><td>0.01</td><td>0.0100</td><td>-</td><td>-</td><td>64 B</td>
+</tr></tbody></table>
+</body>
+</html>
