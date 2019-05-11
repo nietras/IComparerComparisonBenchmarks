@@ -181,9 +181,6 @@ namespace IComparerComparisonBenchmarks
         public int Comparer() => RunComparer(m_comparer);
 
         [Benchmark()]
-        public int ComparisonComparer() => RunComparer(m_comparer);
-
-        [Benchmark()]
         public int TComparer_TComparer() => RunTComparer(m_tcomparer);
 
         [Benchmark()]
