@@ -97,6 +97,34 @@ namespace IComparerComparisonBenchmarks
         public int Compare(T x, T y) => x.CompareTo(y);
     }
 
+    public readonly struct ComparisonTComparer<T>
+        : IComparer<T>
+        where T : IComparable<T>
+    {
+        readonly Comparison<T> m_comparison;
+
+        public ComparisonTComparer(Comparison<T> comparison)
+        {
+            m_comparison = comparison;
+        }
+
+        public int Compare(T x, T y) => m_comparison(x, y);
+    }
+
+    public sealed class ComparisonComparer<T>
+        : IComparer<T>
+        where T : IComparable<T>
+    {
+        readonly Comparison<T> m_comparison;
+
+        public ComparisonComparer(Comparison<T> comparison)
+        {
+            m_comparison = comparison;
+        }
+
+        public int Compare(T x, T y) => m_comparison(x, y);
+    }
+
     public class ComparerComparisonBenchmarkString : ComparerComparisonBenchmark<string, StringTComparer>
     {
         // TODO: We have to get it from the Comparer too
@@ -117,7 +145,7 @@ namespace IComparerComparisonBenchmarks
     }
 
     [MemoryDiagnoser]
-    [DisassemblyDiagnoser]
+    [DisassemblyDiagnoser(recursiveDepth: 2)]
     public abstract class ComparerComparisonBenchmark<T, TComparer>
         where TComparer : IComparer<T>
         where T : IComparable<T>
@@ -128,6 +156,8 @@ namespace IComparerComparisonBenchmarks
         readonly Comparer<T> m_comparer = Comparer<T>.Default;
         readonly Comparison<T> m_comparisonFromIComparer;
         readonly Comparison<T> m_comparisonFromComparer;
+        readonly ComparisonComparer<T> m_comparisonComparer;
+        readonly ComparisonTComparer<T> m_comparisonTComparer;
         readonly TComparer m_tcomparer;
         readonly ComparableTComparer<T> m_comparableTComparer = new ComparableTComparer<T>();
 
@@ -139,6 +169,8 @@ namespace IComparerComparisonBenchmarks
         {
             m_comparisonFromIComparer = m_icomparer.Compare;
             m_comparisonFromComparer = m_comparer.Compare;
+            m_comparisonComparer = new ComparisonComparer<T>(m_comparisonFromComparer);
+            m_comparisonTComparer = new ComparisonTComparer<T>(m_comparisonFromComparer);
             m_tcomparer = tcomparer;
         }
 
@@ -147,6 +179,9 @@ namespace IComparerComparisonBenchmarks
 
         [Benchmark()]
         public int Comparer() => RunComparer(m_comparer);
+
+        [Benchmark()]
+        public int ComparisonComparer() => RunComparer(m_comparer);
 
         [Benchmark()]
         public int TComparer_TComparer() => RunTComparer(m_tcomparer);
@@ -159,6 +194,12 @@ namespace IComparerComparisonBenchmarks
 
         [Benchmark()]
         public int TComparer_Comparable() => RunTComparer(m_comparableTComparer);
+
+        [Benchmark()]
+        public int ComparisonComparer_IComparer() => RunIComparer(m_comparisonComparer);
+
+        [Benchmark()]
+        public int ComparisonComparer_TComparer() => RunTComparer(m_comparisonTComparer);
 
         [Benchmark()]
         public int Comparison_FromIComparer() => RunComparison(m_comparisonFromIComparer);
