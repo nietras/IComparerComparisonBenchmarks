@@ -22,7 +22,9 @@ namespace IComparerComparisonBenchmarks
             var methodPointer = getCompareMethodPointer(comparer);
             var openCompare = Hacker.OpenInstanceGenericDelegate_For_GenericInterfaceMethod<string>(methodPointer);
 
-            var test = openCompare(comparer, "a", "b");
+            var test0 = openCompare(comparer, "a", "a");
+            var test1 = openCompare(comparer, "b", "a");
+            var test2 = openCompare(comparer, "a", "b");
 
 
             var summaryComparableClassInt32 = BenchmarkRunner.Run<ComparerComparisonBenchmarkComparableClassInt32>();
