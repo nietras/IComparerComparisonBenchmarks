@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Running;
 
@@ -25,6 +26,11 @@ namespace IComparerComparisonBenchmarks
             var test0 = openCompare(comparer, "a", "a");
             var test1 = openCompare(comparer, "b", "a");
             var test2 = openCompare(comparer, "a", "b");
+
+            Comparison<string> comparison = string.Compare;
+            var asObjectComparison = Unsafe.As<Comparison<object>>(comparison);
+            var t0 = asObjectComparison("a", "b");
+            var t1 = asObjectComparison("b", "a");
 
 
             var summaryComparableClassInt32 = BenchmarkRunner.Run<ComparerComparisonBenchmarkComparableClassInt32>();
