@@ -32,11 +32,20 @@ namespace IComparerComparisonBenchmarks
             var t0 = asObjectComparison("a", "b");
             var t1 = asObjectComparison("b", "a");
 
+            var n0 = CompareHelper<int>.TypeName;
+            var n1 = CompareHelper<ComparableClassInt32>.TypeName;
+            var n2 = CompareHelper<string>.TypeName;
+
 
             var summaryComparableClassInt32 = BenchmarkRunner.Run<ComparerComparisonBenchmarkComparableClassInt32>();
             var summaryInt = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
             //var summaryString = BenchmarkRunner.Run<ComparerComparisonBenchmarkString>();
         }
+    }
+
+    public static class CompareHelper<T>
+    {
+        public static readonly string TypeName = typeof(T).Name;
     }
 
     public static class Hacker
