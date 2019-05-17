@@ -56,7 +56,7 @@ namespace IComparerComparisonBenchmarks
             return openCompare;
         }
 
-        public static Func<IComparer<T>, IntPtr> CreateGetComparerMethodPointer<T>()
+        public static Func<IComparer<T>, IntPtr> CreateGetIComparerMethodPointer<T>()
         {
             MethodInfo method = typeof(IComparer<T>)
                 .GetMethod("Compare", new Type[] { typeof(T), typeof(T) });
@@ -69,6 +69,22 @@ namespace IComparerComparisonBenchmarks
             il.Emit(OpCodes.Ret);                // Method pointer
 
             var del = (Func<IComparer<T>, IntPtr>)dynamicMethod.CreateDelegate(typeof(Func<IComparer<T>, IntPtr>));
+            return del;
+        }
+
+        public static Func<Comparer<T>, IntPtr> CreateGetComparerMethodPointer<T>()
+        {
+            MethodInfo method = typeof(Comparer<T>)
+                .GetMethod("Compare", new Type[] { typeof(T), typeof(T) });
+
+            var dynamicMethod = new DynamicMethod("Ldvirtftn",
+                typeof(IntPtr), new Type[] { typeof(Comparer<T>) }, typeof(CompareHelper).Module);
+            var il = dynamicMethod.GetILGenerator();
+            il.Emit(OpCodes.Ldarg_0);            // object
+            il.Emit(OpCodes.Ldvirtftn, method);  // IntPtr method pointer
+            il.Emit(OpCodes.Ret);                // Method pointer
+
+            var del = (Func<Comparer<T>, IntPtr>)dynamicMethod.CreateDelegate(typeof(Func<Comparer<T>, IntPtr>));
             return del;
         }
 
