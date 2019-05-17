@@ -214,7 +214,7 @@ namespace IComparerComparisonBenchmarks
         where TComparer : IComparer<T>
         where T : IComparable<T>
     {
-        protected const int Length = 100;
+        protected const int Length = 1000;
         protected static readonly Random m_random = new Random(42);
 
         readonly IComparer<T> m_icomparer = Comparer<T>.Default;
