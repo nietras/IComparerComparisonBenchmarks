@@ -35,7 +35,7 @@ namespace IComparerComparisonBenchmarks
             var t1 = asObjectComparison("b", "a");
 
             var summaryComparableClassInt32 = BenchmarkRunner.Run<ComparerComparisonBenchmarkComparableClassInt32>();
-            //var summaryInt = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
+            var summaryInt = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
             //var summaryString = BenchmarkRunner.Run<ComparerComparisonBenchmarkString>();
         }
     }

@@ -33,7 +33,7 @@ namespace IComparerComparisonBenchmarks
             m_array = Enumerable.Range(0, Length).Select(_ => m_random.Next(-100, 100)).ToArray();
         }
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int OpenComparison_FromCompareTo() => RunOpenComparison(m_openComparisonFromCompareToOpen);
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -122,14 +122,14 @@ namespace IComparerComparisonBenchmarks
             m_array = Enumerable.Range(0, Length).Select(_ => new ComparableClassInt32(m_random.Next(-100, 100))).ToArray();
         }
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int ObjectComparisonTComparer_AsObject() =>
             RunTComparerObject(m_objectComparisonTComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int OpenComparerDelegate_TComparer_AsObject() =>
             RunTComparerObject(new OpenComparerDelegateObjectTComparer(m_comparer, m_openComparerObjectAsObject));
 
@@ -203,7 +203,7 @@ namespace IComparerComparisonBenchmarks
             m_array = Enumerable.Range(0, Length).Select(_ => m_random.Next(100, 400).ToString("D3")).ToArray();
         }
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
     }
 
@@ -214,7 +214,7 @@ namespace IComparerComparisonBenchmarks
         where TComparer : IComparer<T>
         where T : IComparable<T>
     {
-        protected const int Length = 1000;
+        protected const int Length = 500;
         protected static readonly Random m_random = new Random(42);
 
         readonly IComparer<T> m_icomparer = Comparer<T>.Default;
@@ -225,7 +225,6 @@ namespace IComparerComparisonBenchmarks
         readonly ComparisonTComparer<T> m_comparisonTComparer;
         readonly TComparer m_tcomparer;
         readonly ComparableTComparer<T> m_comparableTComparer = new ComparableTComparer<T>();
-
 
         protected T m_pivot;
         protected T[] m_array;
@@ -239,40 +238,40 @@ namespace IComparerComparisonBenchmarks
             m_tcomparer = tcomparer;
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark(Baseline = true, OperationsPerInvoke = Length)]
         public int IComparer() => RunIComparer(m_icomparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparer() => RunComparer(m_comparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int TComparer_TComparer() => RunTComparer(m_tcomparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int TComparer_IComparer() => RunTComparer(m_icomparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int TComparer_Comparer() => RunTComparer(m_comparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int TComparer_Comparable() => RunTComparer(m_comparableTComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int ComparisonComparer_IComparer() => RunIComparer(m_comparisonComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int ComparisonComparer_TComparer() => RunTComparer(m_comparisonTComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_FromIComparer() => RunComparison(m_comparisonFromIComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_FromComparer() => RunComparison(m_comparisonFromComparer);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_CreateFromIComparer() => RunComparison(m_icomparer.Compare);
 
-        [Benchmark()]
+        [Benchmark(OperationsPerInvoke = Length)]
         public int Comparison_CreateFromComparer() => RunComparison(m_comparer.Compare);
 
         [MethodImpl(MethodImplOptions.NoInlining)]
