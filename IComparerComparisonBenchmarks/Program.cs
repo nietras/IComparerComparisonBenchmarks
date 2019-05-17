@@ -18,10 +18,11 @@ namespace IComparerComparisonBenchmarks
             //    .GetMethod("Compare", new Type[] { typeof(string), typeof(string) });
             //var openCompare = (Func<IComparer<string>, string, string, bool>)
             //    Delegate.CreateDelegate(typeof(Func<IComparer<string>, string, string, bool>), null, method);
+            //var getCompareMethodPointer = CompareHelper.CreateGetComparerMethodPointer<string>();
+            //var methodPointer = getCompareMethodPointer(comparer);
+            var openCompare = Comparisons<string>.OpenComparerDelegate; // CompareHelper.OpenInstanceGenericDelegate_For_GenericInterfaceMethod<string>(methodPointer);
+
             var comparer = Comparer<string>.Default;
-            var getCompareMethodPointer = Hacker.CreateGetComparerMethodPointer<string>();
-            var methodPointer = getCompareMethodPointer(comparer);
-            var openCompare = Hacker.OpenInstanceGenericDelegate_For_GenericInterfaceMethod<string>(methodPointer);
 
             var test0 = openCompare(comparer, "a", "a");
             var test1 = openCompare(comparer, "b", "a");
@@ -32,43 +33,36 @@ namespace IComparerComparisonBenchmarks
             var t0 = asObjectComparison("a", "b");
             var t1 = asObjectComparison("b", "a");
 
-            var n0 = CompareHelper<int>.TypeName;
-            var n1 = CompareHelper<ComparableClassInt32>.TypeName;
-            var n2 = CompareHelper<string>.TypeName;
-
-
             var summaryComparableClassInt32 = BenchmarkRunner.Run<ComparerComparisonBenchmarkComparableClassInt32>();
-            var summaryInt = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
+            //var summaryInt = BenchmarkRunner.Run<ComparerComparisonBenchmarkInt>();
             //var summaryString = BenchmarkRunner.Run<ComparerComparisonBenchmarkString>();
         }
     }
 
-    public static class CompareHelper<T>
+    public static class Comparisons<T>
     {
-        public static readonly string TypeName = typeof(T).Name;
+        public static readonly Func<IComparer<T>, T, T, int> OpenComparerDelegate =
+            CompareHelper.CreateOpenComparerDelegate<T>();
     }
 
-    public static class Hacker
+    public static class CompareHelper
     {
-        public class SomeType
+        public static Func<IComparer<T>, T, T, int> CreateOpenComparerDelegate<T>()
         {
-            public virtual void DoNothing<T>()
-            {
-                Console.WriteLine(typeof(T));
-            }
+            var comparer = Comparer<T>.Default;
+            var getCompareMethodPointer = CreateGetComparerMethodPointer<T>();
+            var methodPointer = getCompareMethodPointer(comparer);
+            var openCompare = OpenInstanceGenericDelegate_For_GenericInterfaceMethod<T>(methodPointer);
+            return openCompare;
         }
 
-        public abstract class MyAction
-        {
-            public abstract void Invoke(SomeType type);
-        }
         public static Func<IComparer<T>, IntPtr> CreateGetComparerMethodPointer<T>()
         {
             MethodInfo method = typeof(IComparer<T>)
                 .GetMethod("Compare", new Type[] { typeof(T), typeof(T) });
 
             var dynamicMethod = new DynamicMethod("Ldvirtftn",
-                typeof(IntPtr), new Type[] { typeof(IComparer<T>) }, typeof(Hacker).Module);
+                typeof(IntPtr), new Type[] { typeof(IComparer<T>) }, typeof(CompareHelper).Module);
             var il = dynamicMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);            // object
             il.Emit(OpCodes.Ldvirtftn, method);  // IntPtr method pointer
@@ -82,7 +76,7 @@ namespace IComparerComparisonBenchmarks
         {
             var parameterTypes = new Type[] { typeof(IComparer<T>), typeof(T), typeof(T) };
             var dynamicMethod = new DynamicMethod("calli",
-                typeof(int), parameterTypes, typeof(Hacker).Module);
+                typeof(int), parameterTypes, typeof(CompareHelper).Module);
             var il = dynamicMethod.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);            // comparer
             il.Emit(OpCodes.Ldarg_1);            // T
@@ -96,43 +90,7 @@ namespace IComparerComparisonBenchmarks
 
             var del = (Func<IComparer<T>, T, T, int>)dynamicMethod.CreateDelegate(typeof(Func<IComparer<T>, T, T, int>));
             return del;
-            //var dynamicMethod = new DynamicMethod("Mutate",
-            //typeof(void), new Type[] { typeof(object), typeof(T) }, typeof(Hacker).Module);
-            //var il = dynamicMethod.GetILGenerator();
-            //il.Emit(OpCodes.Ldarg_0);           // object
-            //il.Emit(OpCodes.Unbox, typeof(T));  // T&
-            //il.Emit(OpCodes.Ldarg_1);           // T& + T (argument value)
-            //il.Emit(OpCodes.Stobj, typeof(T));  // empty
-            //il.Emit(OpCodes.Ret);               // empty
-
-            //var del = (Action<object, T>)dynamicMethod.CreateDelegate(typeof(Action<object, T>));
-            //return del;
-
-
-            //var assemblyName = new AssemblyName(Guid.NewGuid().ToString());
-            //var assemblyBuilder = AssemblyBuilder
-            //    .DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-
             // https://stackoverflow.com/questions/7136615/open-delegate-for-generic-interface-method
-            //TypeBuilder builder = AppDomain.CurrentDomain
-            //.DefineDynamicAssembly(new AssemblyName(MethodBase.GetCurrentMethod().DeclaringType.Name),
-            //                       AssemblyBuilderAccess.RunAndCollect)
-            //.DefineDynamicModule("Module").DefineType("MyType",
-            //                                  TypeAttributes.AnsiClass | TypeAttributes.AutoClass | TypeAttributes.Class |
-            //                                  TypeAttributes.Public | TypeAttributes.Sealed,
-            //                                  typeof(MyAction));
-            //var ilgen = builder.DefineMethod("Invoke",
-            //                                 MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Final |
-            //                                 MethodAttributes.Virtual,
-            //                                 CallingConventions.HasThis,
-            //                                 typeof(void), new[] { typeof(SomeType) }).GetILGenerator();
-            //ilgen.Emit(OpCodes.Ldarg_1);
-            //ilgen.Emit(OpCodes.Dup);
-            //ilgen.Emit(OpCodes.Ldvirtftn, typeof(SomeType).GetMethod("DoNothing").MakeGenericMethod(typeof(int)));
-            //ilgen.Emit(OpCodes.Calli, SignatureHelper.GetMethodSigHelper(CallingConventions.HasThis, typeof(void)));
-            //ilgen.Emit(OpCodes.Ret);
-            //MyAction action = Activator.CreateInstance(builder.CreateType()) as MyAction;
-            //action.Invoke(new SomeType());
         }
     }
 }
