@@ -20,6 +20,7 @@ namespace IComparerComparisonBenchmarks
             //    Delegate.CreateDelegate(typeof(Func<IComparer<string>, string, string, bool>), null, method);
             //var getCompareMethodPointer = CompareHelper.CreateGetComparerMethodPointer<string>();
             //var methodPointer = getCompareMethodPointer(comparer);
+            var comparisonFromComparable = Comparisons<string>.ComparisonForComparable; // CompareHelper.OpenInstanceGenericDelegate_For_GenericInterfaceMethod<string>(methodPointer);
             var openCompare = Comparisons<string>.OpenComparerDelegate; // CompareHelper.OpenInstanceGenericDelegate_For_GenericInterfaceMethod<string>(methodPointer);
 
             var comparer = Comparer<string>.Default;
@@ -41,6 +42,13 @@ namespace IComparerComparisonBenchmarks
 
     public static class Comparisons<T>
     {
+        public static readonly Comparison<T> ComparisonForComparable = 
+            typeof(IComparable<T>).IsAssignableFrom(typeof(T)) 
+            ? (Comparison<T>)Delegate.CreateDelegate(typeof(Comparison<T>),
+                typeof(T).GetMethod(nameof(IComparable<T>.CompareTo), new Type[] { typeof(T) })) 
+            : null;
+
+
         public static readonly Func<IComparer<T>, T, T, int> OpenComparerDelegate =
             CompareHelper.CreateOpenComparerDelegate<T>();
     }

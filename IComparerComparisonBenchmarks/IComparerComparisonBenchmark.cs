@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
 
 namespace IComparerComparisonBenchmarks
 {
@@ -30,19 +30,22 @@ namespace IComparerComparisonBenchmarks
             : base(new IntTComparer())
         {
             m_pivot = m_random.Next(-20, 20);
-            m_array = Enumerable.Range(0, 100).Select(_ => m_random.Next(-100, 100)).ToArray();
+            m_array = Enumerable.Range(0, Length).Select(_ => m_random.Next(-100, 100)).ToArray();
         }
 
         [Benchmark()]
         public int OpenComparison_FromCompareTo() => RunOpenComparison(m_openComparisonFromCompareToOpen);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         int RunOpenComparison(OpenComparison<int> openComparison)
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                int value = m_pivot;
-                sum += openComparison(ref value, m_array[i]);
+                int value = pivot;
+                sum += openComparison(ref value, local[i]);
             }
             return sum;
         }
@@ -81,7 +84,21 @@ namespace IComparerComparisonBenchmarks
             m_compare = compare;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         public int Compare(object x, object y) => m_compare(m_comparer, x, y);
+    }
+
+    public readonly struct ObjectComparisonTComparer : IComparer<object>
+    {
+        readonly Comparison<object> m_comparison;
+
+        public ObjectComparisonTComparer(Comparison<object> comparison)
+        {
+            m_comparison = comparison;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        public int Compare(object x, object y) => m_comparison(x, y);
     }
 
     public class ComparerComparisonBenchmarkComparableClassInt32 : ComparerComparisonBenchmark<ComparableClassInt32, ComparableClassInt32TComparer>
@@ -95,27 +112,37 @@ namespace IComparerComparisonBenchmarks
         static readonly Func<IComparer, object, object, int> m_openComparerObjectAsObject =
             Unsafe.As<Func<IComparer, object, object, int>>(Comparisons<ComparableClassInt32>.OpenComparerDelegate);
 
+        static readonly ObjectComparisonTComparer m_objectComparisonTComparer = new ObjectComparisonTComparer(
+            Unsafe.As<Comparison<object>>(Comparisons<ComparableClassInt32>.ComparisonForComparable));
+
         public ComparerComparisonBenchmarkComparableClassInt32()
             : base(new ComparableClassInt32TComparer())
         {
             m_pivot = new ComparableClassInt32(m_random.Next(-20, 20));
-            m_array = Enumerable.Range(0, 100).Select(_ => new ComparableClassInt32(m_random.Next(-100, 100))).ToArray();
+            m_array = Enumerable.Range(0, Length).Select(_ => new ComparableClassInt32(m_random.Next(-100, 100))).ToArray();
         }
 
         [Benchmark()]
         public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
 
         [Benchmark()]
+        public int ObjectComparisonTComparer_AsObject() =>
+            RunTComparerObject(m_objectComparisonTComparer);
+
+        [Benchmark()]
         public int OpenComparerDelegate_TComparer_AsObject() =>
             RunTComparerObject(new OpenComparerDelegateObjectTComparer(m_comparer, m_openComparerObjectAsObject));
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         protected int RunTComparerObject<TComp>(TComp comparer)
             where TComp : IComparer<object>
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                sum += comparer.Compare(m_pivot, m_array[i]);
+                sum += comparer.Compare(pivot, local[i]);
             }
             return sum;
         }
@@ -173,7 +200,7 @@ namespace IComparerComparisonBenchmarks
             : base(new StringTComparer())
         {
             m_pivot = m_random.Next(200, 300).ToString("D3");
-            m_array = Enumerable.Range(0, 100).Select(_ => m_random.Next(100, 400).ToString("D3")).ToArray();
+            m_array = Enumerable.Range(0, Length).Select(_ => m_random.Next(100, 400).ToString("D3")).ToArray();
         }
 
         [Benchmark()]
@@ -181,11 +208,13 @@ namespace IComparerComparisonBenchmarks
     }
 
     [MemoryDiagnoser]
-    [DisassemblyDiagnoser(recursiveDepth: 2)]
+    [DisassemblyDiagnoser(recursiveDepth: 3, printAsm: true, printIL: true, printSource: true)]
+    [InliningDiagnoser]
     public abstract class ComparerComparisonBenchmark<T, TComparer>
         where TComparer : IComparer<T>
         where T : IComparable<T>
     {
+        protected const int Length = 100;
         protected static readonly Random m_random = new Random(42);
 
         readonly IComparer<T> m_icomparer = Comparer<T>.Default;
@@ -246,43 +275,55 @@ namespace IComparerComparisonBenchmarks
         [Benchmark()]
         public int Comparison_CreateFromComparer() => RunComparison(m_comparer.Compare);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         protected int RunIComparer(IComparer<T> comparer)
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                sum += comparer.Compare(m_pivot, m_array[i]);
+                sum += comparer.Compare(pivot, local[i]);
             }
             return sum;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         protected int RunComparer(Comparer<T> comparer)
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                sum += comparer.Compare(m_pivot, m_array[i]);
+                sum += comparer.Compare(pivot, local[i]);
             }
             return sum;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         protected int RunComparison(Comparison<T> comparison)
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                sum += comparison(m_pivot, m_array[i]);
+                sum += comparison(pivot, local[i]);
             }
             return sum;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         protected int RunTComparer<TComp>(TComp comparer)
             where TComp : IComparer<T>
         {
+            var pivot = m_pivot;
+            var local = m_array;
             int sum = 0;
-            for (int i = 0; i < m_array.Length; i++)
+            for (int i = 0; i < local.Length; i++)
             {
-                sum += comparer.Compare(m_pivot, m_array[i]);
+                sum += comparer.Compare(pivot, local[i]);
             }
             return sum;
         }
