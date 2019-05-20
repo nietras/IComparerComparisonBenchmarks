@@ -123,29 +123,17 @@ namespace IComparerComparisonBenchmarks
         }
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
+        public int Comparison_FromCompareToOpen() => 
+            Runners<ComparableClassInt32>.RunComparison(m_pivot, m_array, m_openComparisonFromCompareToOpen);
 
         [Benchmark(OperationsPerInvoke = Length)]
         public int ObjectComparisonTComparer_AsObject() =>
-            RunTComparerObject(m_objectComparisonTComparer);
+            Runners<ComparableClassInt32>.RunTComparerObject(m_pivot, m_array, m_objectComparisonTComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
         public int OpenComparerDelegate_TComparer_AsObject() =>
-            RunTComparerObject(new OpenComparerDelegateObjectTComparer(m_comparer, m_openComparerObjectAsObject));
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        protected int RunTComparerObject<TComp>(TComp comparer)
-            where TComp : IComparer<object>
-        {
-            var pivot = m_pivot;
-            var local = m_array;
-            int sum = 0;
-            for (int i = 0; i < local.Length; i++)
-            {
-                sum += comparer.Compare(pivot, local[i]);
-            }
-            return sum;
-        }
+            Runners<ComparableClassInt32>.RunTComparerObject(m_pivot, m_array, 
+                new OpenComparerDelegateObjectTComparer(m_comparer, m_openComparerObjectAsObject));
     }
 
     public readonly struct StringTComparer : IComparer<string>
@@ -204,7 +192,7 @@ namespace IComparerComparisonBenchmarks
         }
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_FromCompareToOpen() => RunComparison(m_openComparisonFromCompareToOpen);
+        public int Comparison_FromCompareToOpen() => Runners<string>.RunComparison(m_pivot, m_array, m_openComparisonFromCompareToOpen);
     }
 
     [MemoryDiagnoser]
@@ -239,92 +227,39 @@ namespace IComparerComparisonBenchmarks
         }
 
         [Benchmark(Baseline = true, OperationsPerInvoke = Length)]
-        public int IComparer() => RunIComparer(m_icomparer);
+        public int IComparer() => Runners<T>.RunIComparer(m_pivot, m_array, m_icomparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparer() => RunComparer(m_comparer);
+        public int Comparer() => Runners<T>.RunComparer(m_pivot, m_array, m_comparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int TComparer_TComparer() => RunTComparer(m_tcomparer);
+        public int TComparer_TComparer() => Runners<T>.RunTComparer(m_pivot, m_array, m_tcomparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int TComparer_IComparer() => RunTComparer(m_icomparer);
+        public int TComparer_IComparer() => Runners<T>.RunTComparer(m_pivot, m_array, m_icomparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int TComparer_Comparer() => RunTComparer(m_comparer);
+        public int TComparer_Comparer() => Runners<T>.RunTComparer(m_pivot, m_array, m_comparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int TComparer_Comparable() => RunTComparer(m_comparableTComparer);
+        public int TComparer_Comparable() => Runners<T>.RunTComparer(m_pivot, m_array, m_comparableTComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int ComparisonComparer_IComparer() => RunIComparer(m_comparisonComparer);
+        public int ComparisonComparer_IComparer() => Runners<T>.RunIComparer(m_pivot, m_array, m_comparisonComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int ComparisonComparer_TComparer() => RunTComparer(m_comparisonTComparer);
+        public int ComparisonComparer_TComparer() => Runners<T>.RunTComparer(m_pivot, m_array, m_comparisonTComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_FromIComparer() => RunComparison(m_comparisonFromIComparer);
+        public int Comparison_FromIComparer() => Runners<T>.RunComparison(m_pivot, m_array, m_comparisonFromIComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_FromComparer() => RunComparison(m_comparisonFromComparer);
+        public int Comparison_FromComparer() => Runners<T>.RunComparison(m_pivot, m_array, m_comparisonFromComparer);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_CreateFromIComparer() => RunComparison(m_icomparer.Compare);
+        public int Comparison_CreateFromIComparer() => Runners<T>.RunComparison(m_pivot, m_array, m_icomparer.Compare);
 
         [Benchmark(OperationsPerInvoke = Length)]
-        public int Comparison_CreateFromComparer() => RunComparison(m_comparer.Compare);
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        protected int RunIComparer(IComparer<T> comparer)
-        {
-            var pivot = m_pivot;
-            var local = m_array;
-            int sum = 0;
-            for (int i = 0; i < local.Length; i++)
-            {
-                sum += comparer.Compare(pivot, local[i]);
-            }
-            return sum;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        protected int RunComparer(Comparer<T> comparer)
-        {
-            var pivot = m_pivot;
-            var local = m_array;
-            int sum = 0;
-            for (int i = 0; i < local.Length; i++)
-            {
-                sum += comparer.Compare(pivot, local[i]);
-            }
-            return sum;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        protected int RunComparison(Comparison<T> comparison)
-        {
-            var pivot = m_pivot;
-            var local = m_array;
-            int sum = 0;
-            for (int i = 0; i < local.Length; i++)
-            {
-                sum += comparison(pivot, local[i]);
-            }
-            return sum;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        protected int RunTComparer<TComp>(TComp comparer)
-            where TComp : IComparer<T>
-        {
-            var pivot = m_pivot;
-            var local = m_array;
-            int sum = 0;
-            for (int i = 0; i < local.Length; i++)
-            {
-                sum += comparer.Compare(pivot, local[i]);
-            }
-            return sum;
-        }
+        public int Comparison_CreateFromComparer() => Runners<T>.RunComparison(m_pivot, m_array, m_comparer.Compare);
     }
 }
